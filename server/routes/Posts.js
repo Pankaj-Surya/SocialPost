@@ -9,6 +9,13 @@ router.get('/allPost',async (req,res)=>{
   res.json(allPost)
 })
 
+
+router.get('/byId/:id',async (req,res)=>{
+  const id =  req.params.id
+  const post =await Posts.findOne({ where: { id : id  } });
+  res.json(post)
+})
+
 router.post('/',async (req,res)=>{
     const post = req.body;
     console.log("post : ",post)
