@@ -18,3 +18,5 @@ npx sequelize-cli init
 1.Add cors library using npm 
 2.app.use(cors())
 
+dd
+
