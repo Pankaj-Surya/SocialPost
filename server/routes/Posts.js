@@ -5,7 +5,9 @@ const {Posts} = require("../models")
 //console.log(Posts)
 
 router.get('/allPost',async (req,res)=>{
-  const allPost =await Posts.findAll();
+  const allPost =await Posts.findAll({order:[
+    ['createdAt', 'DESC'],  
+  ]});
   res.json(allPost)
 })
 
