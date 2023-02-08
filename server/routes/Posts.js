@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const {Posts} = require("../models")
-
+const {validateToken}= require("../middlewares/AuthMiddleware")
 //console.log(Posts)
 
 router.get('/allPost',async (req,res)=>{
@@ -18,7 +18,7 @@ router.get('/byId/:id',async (req,res)=>{
   res.json(post)
 })
 
-router.post('/',async (req,res)=>{
+router.post('/',validateToken,async (req,res)=>{
     const post = req.body;
     console.log("post : ",post)
     await Posts.create(post)

@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
 
 function CreatePost() {
+    const [auth,setAuth] = useState(false);
     const initialValues = {
         title: "",
         postText: "",
         username: "",
     };
 
+    
     const validationSchema = Yup.object().shape({
         title: Yup.string().required("You must input a Title!"),
         postText: Yup.string().required(),
-        username: Yup.string().min(3).max(15).required(),
+        username: Yup.string().min(3).max(35).required(),
     });
 
     const onSubmit =async (data) =>{

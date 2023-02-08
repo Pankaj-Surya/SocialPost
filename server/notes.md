@@ -20,3 +20,25 @@ npx sequelize-cli init
 
 dd
 
+# Q3.How to validata json webToken?
+## On Backend validate token
+created token on -> /login request
+1.const accessToken =  sign({username:user.username,id:user.id},"IMPSECRET")
+2.passed to res.json(accessToken)
+3.created AuthMiddleware in middleware ->validate    request 
+ 3.1 get -> const accessToken = req.header("accessToken");
+ 3.2 verify 
+ 3.3 return to og fn
+
+
+
+## On Login  - Frontend
+1.get the accessToken from res.data
+2.set -> sessionStorage.setItem("accessToken", accessToken);
+and passed that middleware to 
+
+## To use 
+router.post('/',validateToken,async (req,res)=>{})
+
+
+

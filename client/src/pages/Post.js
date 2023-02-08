@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import { publicRequest } from '../requestMethod';
 
 
@@ -10,6 +11,7 @@ const Post = () => {
     const { id } = useParams();
     const [comments, setComments] = useState([])
     const [newComment, setNewComment] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getData = async () => {
@@ -25,12 +27,36 @@ const Post = () => {
     }, [newComment])
 
 
-    const addComment = async() => {
-        await publicRequest.post('/comments',{
-            commentBody:newComment,
-            PostId:id
-        })
+    const addComment = async () => {
+        const response = await publicRequest.post('/comments', {
+            commentBody: newComment,
+            PostId: id
+        },
+            {
+                headers: {
+                    accessToken: sessionStorage.getItem("accessToken"),
+                }
+            })
         setNewComment("")
+        console.log(response.data.error)
+
+        if (response.data.error) {
+            alert("please login first")
+            navigate("/login")
+        }
+        // if (response.data.error) {
+        //     toast.error(response.data.error, {
+        //         position: "top-center",
+        //         autoClose: 5000,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         theme: "dark",
+        //         });
+        //     return;
+        // }
         console.log("added comment successfully")
     }
 
@@ -50,15 +76,15 @@ const Post = () => {
                         placeholder='Comment...'
                         autoComplete='off'
                         value={newComment}
-                        onChange={(e) => { setNewComment(e.target.value)}} />
+                        onChange={(e) => { setNewComment(e.target.value) }} />
                     <button onClick={addComment}>Add Comment</button>
                 </div>
                 <div className="listOfComments">
                     {
-                        comments.map((comment) =>{
-                            return(
+                        comments.map((comment) => {
+                            return (
                                 <div key={comment.id} className="comment">
-                                     {comment.commentBody}              
+                                    {comment.commentBody}
                                 </div>
                             )
                         })
